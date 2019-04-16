@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Knews
 {
@@ -20,6 +21,8 @@ namespace Knews
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AddSwaggerServices(services);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the React files will be served from this directory
@@ -47,6 +50,12 @@ namespace Knews
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Knews API V1");
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -62,6 +71,29 @@ namespace Knews
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
+            });
+        }
+
+        private void AddSwaggerServices(IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                #region Swagger generation
+                c.SwaggerDoc("v1", new Info
+                    {
+                        Title = "News Service API",
+                        License = new License
+                        {
+                            Name = "Apache 2.0",
+                            Url = "https://www.apache.org/licenses/LICENSE-2.0"
+                        }
+                    }
+                );
+
+                // These two lines are necessary for Swagger to pick up the C# XML comments and show them in the Swagger UI. See https://github.com/domaindrivendev/Swashbuckle.AspNetCore for more details.
+                var filePath = System.IO.Path.Combine(System.AppContext.BaseDirectory, "api.xml");
+                c.IncludeXmlComments(filePath);
+                #endregion
             });
         }
     }

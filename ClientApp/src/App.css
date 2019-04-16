@@ -1,33 +1,144 @@
-.App {
-  text-align: center;
+html {
+  background-color: #fefefe
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: Open Sans, Arial;
+  color: #454545;
+  font-size: 16px;
+  margin: 2em auto;
+  max-width: 800px;
+  padding: 1em;
+  line-height: 1.4;
+  text-align: justify
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+a {
+  color: #07a
 }
 
-.App-link {
-  color: #61dafb;
+a:visited {
+  color: #941352
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
+}
+
+span.citneed {
+  vertical-align: top;
+  font-size: .7em;
+  padding-left: .3em
+}
+
+small {
+  font-size: .4em
+}
+
+p.st {
+  margin-top: -1em
+}
+
+ul li img {
+  height: 1em
+}
+
+blockquote {
+  color: #456;
+  margin-left: 0;
+  margin-top: 2em;
+  margin-bottom: 2em
+}
+
+blockquote span {
+  float: left;
+  margin-left: 1rem;
+  padding-top: 1rem
+}
+
+blockquote author {
+  display: block;
+  clear: both;
+  font-size: .6em;
+  margin-left: 2.4rem;
+  font-style: oblique
+}
+
+blockquote author:before {
+  content: "- ";
+  margin-right: 1em
+}
+
+blockquote:before {
+  font-family: Times New Roman, Times, Arial;
+  color: #666;
+  content: open-quote;
+  font-size: 2.2em;
+  font-weight: 600;
+  float: left;
+  margin-top: 0;
+  margin-right: .2rem;
+  width: 1.2rem
+}
+
+blockquote:after {
+  content: "";
+  display: block;
+  clear: both
+}
+
+@media screen and (max-width:500px) {
+  body {
+    text-align: left
   }
-  to {
-    transform: rotate(360deg);
+  div.fancyPositioning div.picture-left, div.fancyPositioning div.tleft {
+    float: none;
+    width: inherit
   }
+  blockquote span {
+    width: 80%
+  }
+  blockquote author {
+    padding-top: 1em;
+    width: 80%;
+    margin-left: 15%
+  }
+  blockquote author:before {
+    content: "";
+    margin-right: inherit
+  }
+}
+
+span.visited {
+  color: #941352
+}
+
+span.visited-maroon {
+  color: #85144b
+}
+
+span.wr {
+  color: #c0392b;
+  font-weight: 600;
+  text-decoration: underline
+}
+
+span.sb {
+  color: #00e
+}
+
+span.sb, span.sv {
+  cursor: not-allowed
+}
+
+span.sv {
+  color: #551a8b
+}
+
+span.mfw {
+  color: #730000
 }
