@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import * as distiller from './distiller';
+import SearchAppBar from './SearchAppBar';
 
 // interfaces
 interface IState {
@@ -54,13 +55,15 @@ class App extends Component<IProps, IState> {
   render() {
     return (
       <div>
-        <input name='url' type="text" value={this.state.url} onChange={this.handleUrlChange} />
-        <button onClick={this.handleClick}>GO</button>
-        <h1>{this.state.title}</h1>
-        <article>
-          <h2>{this.state.byline}</h2>
-          <ArticleBody paragraphs={this.state.paragraphs} />
-        </article>
+        <SearchAppBar url={this.state.url} handleUrlSubmit={this.handleClick} handleUrlChange={this.handleUrlChange}></SearchAppBar>
+        
+        <main>
+          <h1>{this.state.title}</h1>
+          <article>
+            <h2>{this.state.byline}</h2>
+            <ArticleBody paragraphs={this.state.paragraphs} />
+          </article>
+        </main>
       </div>
     );
   }
