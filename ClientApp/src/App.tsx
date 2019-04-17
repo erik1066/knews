@@ -1,7 +1,6 @@
 'use strict';
 
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import * as distiller from './distiller';
 
@@ -15,12 +14,11 @@ interface IState {
   url: string;
 }
 
-interface IProps {} // tslint:disable-line
-
+interface IProps { } // tslint:disable-line
 
 class App extends Component<IProps, IState> {
 
-  constructor (props: object) {
+  constructor(props: object) {
     super(props);
 
     this.state = {
@@ -31,9 +29,11 @@ class App extends Component<IProps, IState> {
       paragraphs: [],
       url: ''
     };
+  }
 
-    const article = distiller.distill("")
-    .then(article => {
+  handleClick = () => {
+    distiller.distill(this.state.url)
+      .then(article => {
         this.setState({
           loading: false,
           loadingMessage: '',
@@ -44,38 +44,37 @@ class App extends Component<IProps, IState> {
         })
       });
   }
-  
-  render() {
 
+  handleUrlChange = (event: any) => {
+    let newState = JSON.parse(JSON.stringify(this.state));
+    newState.url = event.target.value;
+    this.setState(newState);
+  }
+
+  render() {
     return (
       <div>
-
-        <input type="text" value={this.state.url} />
-        <button>GO</button>
-
-        <h1>{ this.state.title }</h1>
-
+        <input name='url' type="text" value={this.state.url} onChange={this.handleUrlChange} />
+        <button onClick={this.handleClick}>GO</button>
+        <h1>{this.state.title}</h1>
         <article>
-          <h2>{ this.state.byline }</h2>
-
+          <h2>{this.state.byline}</h2>
           <ArticleBody paragraphs={this.state.paragraphs} />
-          
         </article>
-        
       </div>
     );
   }
 }
 
-const ArticleBody = (props : { paragraphs: string[] }) => { 
+const ArticleBody = (props: { paragraphs: string[] }) => {
 
   const paragraphs = props.paragraphs.map((paragraph, index) => {
 
-      return (
-        <p>
-          {paragraph}
-        </p>
-      );
+    return (
+      <p>
+        {paragraph}
+      </p>
+    );
   });
 
   return (
