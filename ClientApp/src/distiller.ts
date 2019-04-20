@@ -1,76 +1,131 @@
+'use strict';
+
 // Distills the Html at a given URL to just its readable components
-interface Article {
-    url: string;
-    title: string;
-    byline: string;
-    paragraphs: string[];
+// TODO: Use xpath from a config file and remove hard-coded strings
+
+import { Article } from './article';
+
+export async function distillArticleList(url: string): Promise<string[]> {
+
+  const fullUrl: string = 'api/1.0/News/Article/' + encodeURIComponent(url);
+
+  const response = await fetch(fullUrl, {
+    method: "GET",
+  });
+  const html = await response.text();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+
+  const titles: string[] = getTitles(doc);
+
+  return titles;
+}
+
+export async function distillArticle(url: string): Promise<Article> {
+
+  const fullUrl: string = 'api/1.0/News/Article/' + encodeURIComponent(url);
+
+  const response = await fetch(fullUrl, {
+    method: "GET",
+  });
+  const html = await response.text();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+
+  const title = {
+    type: "title",
+    content: getTitle(doc)
   }
 
-export async function distill(url: string) : Promise<Article> {
+  let article: Article = {
+    organization: getOrganization(doc),
+    url: decodeURIComponent(url),
+    title: getTitle(doc),
+    byline: getByline(doc),
+    authors: getAuthors(doc),
+    paragraphs: getParagraphs(doc)
+  };
 
-    const fullUrl: string = 'api/1.0/News/Article/' + encodeURIComponent(url);
-
-    const response = await fetch(fullUrl, {
-        method: "GET",
-    });
-    const html = await response.text();
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    
-    const title = {
-        type: "title",
-        content: getTitle(doc)
-    }
-
-    let article : Article = {
-        url: decodeURIComponent(url),
-        title: getTitle(doc),
-        byline: getByline(doc),
-        paragraphs: getParagraphs(doc)
-    };
-
-    return article;
+  return article;
 }
 
-function getTitle(doc: Document) : string {
+function getTitles(doc: Document): string[] {
 
-    const title = doc
-        .evaluate("//article//h1", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
-        .iterateNext()
-        .textContent || '';
+  let titles: string[] = [];
 
-    return title;
+  const iterator = doc.evaluate("//li", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+  try {
+    let thisNode = iterator.iterateNext();
+
+    while (thisNode) {
+      const title = thisNode.textContent || ''; // TODO: Implement ?? ''; when available
+
+      titles.push(title);
+      thisNode = iterator.iterateNext();
+    }
+  }
+  catch (e) {
+    console.error('Error: Document tree modified during iteration ' + e);
+  }
+
+  return titles;
 }
 
-function getByline(doc: Document) : string {
+function getOrganization(doc: Document): string {
 
-    const byline = doc
-        .evaluate("//article//h2", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
-        .iterateNext()
-        .textContent || '';
+  const title = doc
+    .evaluate("//title", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+    .iterateNext()
+    .textContent || '';
 
-    return byline;
+  return title;
 }
 
-function getParagraphs(doc: Document) : string[] {
+function getTitle(doc: Document): string {
 
-    let paragraphs : string[] = [];
+  const title = doc
+    .evaluate("//article//h1", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+    .iterateNext()
+    .textContent || '';
 
-    const iterator = doc.evaluate("//article//p", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+  return title;
+}
 
-    try {
-        let thisNode = iterator.iterateNext();
+function getByline(doc: Document): string {
 
-        while (thisNode) {
-            const paragraph = thisNode.textContent || ''; // TODO: Implement ?? ''; when available
-            // console.info(paragraph);
+  const byline = doc
+    .evaluate("//article//h2", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+    .iterateNext()
+    .textContent || '';
 
-            paragraphs.push(paragraph);
-            thisNode = iterator.iterateNext();
-        }
+  return byline;
+}
+
+function getParagraphs(doc: Document): string[] {
+
+  let paragraphs: string[] = [];
+
+  const iterator = doc.evaluate("//article//p", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+  try {
+    let thisNode = iterator.iterateNext();
+
+    while (thisNode) {
+      const paragraph = thisNode.textContent || ''; // TODO: Implement ?? ''; when available
+      // console.info(paragraph);
+
+      paragraphs.push(paragraph);
+      thisNode = iterator.iterateNext();
     }
-    catch (e) {
-        console.error('Error: Document tree modified during iteration ' + e);
-    }
+  }
+  catch (e) {
+    console.error('Error: Document tree modified during iteration ' + e);
+  }
 
-    return paragraphs;
+  return paragraphs;
+}
+
+function getAuthors(doc: Document): string[] {
+  // TODO: Implement
+  let authors: string[] = [];
+  return authors;
 }
