@@ -41,7 +41,7 @@ export async function distillArticle(url: string): Promise<Article> {
     title: getTitle(doc),
     byline: getByline(doc),
     authors: getAuthors(doc),
-    introImageUrl: '',
+    introImageUrl: getImage(doc),
     paragraphs: getParagraphs(doc)
   };
 
@@ -89,6 +89,16 @@ function getTitle(doc: Document): string {
     .textContent || '';
 
   return title;
+}
+
+function getImage(doc: Document): string {
+
+  const image = doc
+    .evaluate("//article//figure//img/@src", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+    .iterateNext()
+    .textContent || '';
+
+  return image;
 }
 
 function getByline(doc: Document): string {

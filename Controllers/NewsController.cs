@@ -52,13 +52,13 @@ namespace Knews.Controllers
                 new NewsSource()
                 {
                     Name = "Ars Technica",
-                    Url = "https://www.arstechnica.com",
+                    Url = "https://arstechnica.com",
                     IconUrl = "https://cdn.arstechnica.net/favicon.ico"
                 },
                 new NewsSource()
                 {
                     Name = "AnandTech",
-                    Url = "REPLhttps://www.anandtech.comACEME",
+                    Url = "https://www.anandtech.com",
                     IconUrl = "https://www.anandtech.com/favicon.ico"
                 },
                 new NewsSource()

@@ -3,6 +3,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import { IArticle } from './article';
 
@@ -11,7 +14,15 @@ const styles = (theme: Theme) =>
     articleParagraph: {
       fontSize: 20,
       marginBottom: 25
-    }
+    },
+    card: {
+      height: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    cardMedia: {
+      paddingTop: '56.25%', // 16:9
+    },
   });
 
 interface ArticleBodyProps extends WithStyles<typeof styles> {
@@ -35,9 +46,21 @@ const ArticleBody = (props: ArticleBodyProps) => {
   });
 
   return (
-    <div>
-      {paragraphs}
-    </div>
+    <Grid container spacing={40}>
+      <Grid item sm={12} md={12} lg={12}>
+
+        <Card className={classes.card}>
+
+          <CardMedia
+            className={classes.cardMedia}
+            image={props.article.introImageUrl} // eslint-disable-line max-len
+            title={props.article.title}
+          />
+        </Card>
+
+        {paragraphs}
+      </Grid>
+    </Grid>
   );
 }
 

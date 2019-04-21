@@ -139,6 +139,9 @@ const styles = (theme: Theme) =>
       },
     },
     appBarSpacer: theme.mixins.toolbar,
+    titleSpacer: {
+      height: '1rem',
+    },
     content: {
       flexGrow: 1,
       padding: theme.spacing.unit * 3,
@@ -154,9 +157,10 @@ export interface Props extends WithStyles<typeof styles> {
   article: IArticle,
   articles: IArticle[],
   newsSources: INewsSource[],
+  selectedNewsSource?: INewsSource,
   handleUrlChange(event: any): void,
   handleUrlSubmit(event: any, url: string): void,
-  handleNewsSourceSelection(event: any): void,
+  handleNewsSourceSelection(event: any, source: INewsSource): void,
   handleDrawerOpen(event: any): void,
   handleDrawerClose(event: any): void,
 }
@@ -169,7 +173,9 @@ function SearchAppBar(props: Props) {
   const sources = props.newsSources.map((source, index) => {
 
     return (
-      <ListItem button onClick={props.handleNewsSourceSelection}>
+      <ListItem button onClick={(event) => {
+        props.handleNewsSourceSelection(event, source);
+      }}>
         <ListItemAvatar>
           <Avatar
             className={classes.avatar}
@@ -214,7 +220,7 @@ function SearchAppBar(props: Props) {
           <div className={classes.search}>
             <InputBase
               onChange={props.handleUrlChange}
-              onKeyPress={ (event) => props.handleUrlSubmit(event, props.url) }
+              onKeyPress={(event) => props.handleUrlSubmit(event, props.url)}
               placeholder="Enter a URL…"
               classes={{
                 root: classes.inputRoot,
@@ -244,26 +250,59 @@ function SearchAppBar(props: Props) {
         <Divider />
       </Drawer>
 
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Typography variant="h3" gutterBottom component="h1">
-          {props.article.title}
-        </Typography>
+      {props.article && props.article.title &&
 
-        <Typography variant="h4" gutterBottom component="h2">
-          {props.article.byline}
-        </Typography>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
 
-        <div className={classes.appBarSpacer} />
+          {props.selectedNewsSource &&
+            <Typography variant="h5" gutterBottom component="p">
+              {props.selectedNewsSource.name}
+            </Typography>
+          }
+          <Divider />
+          <div className={classes.titleSpacer} />
 
-        {props.article && props.article.title && 
-          <ArticleBody article={props.article}></ArticleBody>
-        }
-        {props.articles &&
-          <ArticleListBody handleUrlSubmit={props.handleUrlSubmit} articles={props.articles}></ArticleListBody>
-        }
+          <div>
+            <Typography variant="h4" gutterBottom component="h1">
+              {props.article.title}
+            </Typography>
 
-      </main>
+            <Typography variant="h6" gutterBottom component="h2">
+              {props.article.byline}
+            </Typography>
+
+            <div className={classes.titleSpacer} />
+
+            <ArticleBody article={props.article}></ArticleBody>
+          </div>
+        </main>
+      }
+
+      {props.articles && props.articles.length > 0 &&
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+
+          {props.selectedNewsSource &&
+            <Typography variant="h5" gutterBottom component="p">
+              {props.selectedNewsSource.name}
+            </Typography>
+          }
+          <Divider />
+          <div className={classes.titleSpacer} />
+
+          <div>
+            <div className={classes.titleSpacer} />
+            <ArticleListBody handleUrlSubmit={props.handleUrlSubmit} articles={props.articles}></ArticleListBody>
+          </div>
+        </main>
+      }
+
+      {!props.article && !props.articles &&
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+        </main>
+      }
 
     </div>
   );

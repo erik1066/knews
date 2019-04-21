@@ -17,6 +17,7 @@ interface IState {
   url: string;
   drawerOpen: boolean;
   newsSources: INewsSource[];
+  selectedNewsSource?: INewsSource;
   articleList: IArticle[];
   article: IArticle;
 }
@@ -96,6 +97,7 @@ const DecoratedApp = withStyles(styles)(
             url: article.url,
             drawerOpen: this.state.drawerOpen,
             newsSources: this.state.newsSources,
+            selectedNewsSource: this.state.selectedNewsSource,
             articleList: [], // clear, load an article
             article: {
               organization: article.organization,
@@ -106,7 +108,7 @@ const DecoratedApp = withStyles(styles)(
               authors: article.authors,
               paragraphs: article.paragraphs
             }
-          })
+          });
         });
     }
 
@@ -119,6 +121,7 @@ const DecoratedApp = withStyles(styles)(
             url: article.url,
             drawerOpen: this.state.drawerOpen,
             newsSources: this.state.newsSources,
+            selectedNewsSource: this.state.selectedNewsSource,
             articleList: [], // clear, load an article
             article: {
               organization: article.organization,
@@ -129,17 +132,18 @@ const DecoratedApp = withStyles(styles)(
               authors: article.authors,
               paragraphs: article.paragraphs
             }
-          })
+          });
         });
     }
 
-    handleNewsSourceSelection = () => {
+    handleNewsSourceSelection = (event: any, source: INewsSource) => {
       let newState = JSON.parse(JSON.stringify(this.state));
 
-      newsSources.getArticleList("https://arstechnica.com")
+      newsSources.getArticleList(source.url)
         .then(list => {
           newState.articleList = list;
           newState.article = {};
+          newState.selectedNewsSource = source;
           this.setState(newState);
         });
     }
@@ -175,6 +179,7 @@ const DecoratedApp = withStyles(styles)(
             articles={this.state.articleList}
             url={this.state.url}
             open={this.state.drawerOpen}
+            selectedNewsSource={this.state.selectedNewsSource}
             handleNewsSourceSelection={this.handleNewsSourceSelection}
             handleDrawerOpen={this.handleDrawerOpen}
             handleDrawerClose={this.handleDrawerClose}
