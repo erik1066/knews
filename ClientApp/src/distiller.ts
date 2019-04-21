@@ -5,21 +5,6 @@
 
 import { Article } from './article';
 
-export async function distillArticleList(url: string): Promise<string[]> {
-
-  const fullUrl: string = 'api/1.0/News/Articles/' + encodeURIComponent(url);
-
-  const response = await fetch(fullUrl, {
-    method: "GET",
-  });
-  const html = await response.text();
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-
-  const titles: string[] = getTitles(doc);
-
-  return titles;
-}
-
 export async function distillArticle(url: string): Promise<Article> {
 
   const fullUrl: string = 'api/1.0/News/Articles/' + encodeURIComponent(url);
@@ -46,29 +31,6 @@ export async function distillArticle(url: string): Promise<Article> {
   };
 
   return article;
-}
-
-function getTitles(doc: Document): string[] {
-
-  let titles: string[] = [];
-
-  const iterator = doc.evaluate("//li", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
-
-  try {
-    let thisNode = iterator.iterateNext();
-
-    while (thisNode) {
-      const title = thisNode.textContent || ''; // TODO: Implement ?? ''; when available
-
-      titles.push(title);
-      thisNode = iterator.iterateNext();
-    }
-  }
-  catch (e) {
-    console.error('Error: Document tree modified during iteration ' + e);
-  }
-
-  return titles;
 }
 
 function getOrganization(doc: Document): string {

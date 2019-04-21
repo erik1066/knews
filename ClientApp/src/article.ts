@@ -21,6 +21,8 @@ export class Article implements IArticle {
 }
 
 export interface IArticleConfig {
+  newsSource: string;
+  organization: string;
   title: string;
   subtitle?: string;
   firstPara?: string;
