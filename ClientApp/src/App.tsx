@@ -7,7 +7,7 @@ import * as distiller from './distiller';
 import SearchAppBar from './SearchAppBar';
 import { IArticle } from './article';
 import { INewsSource } from './newssource';
-import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
+import { MuiThemeProvider, createStyles, createMuiTheme, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import * as newsSources from './newssource';
 
 // interfaces
@@ -24,6 +24,39 @@ interface IState {
 
 export interface IProps extends WithStyles<typeof styles> {
 }
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      // light: will be calculated from palette.primary.main,
+      main: '#ff4400',
+      // dark: will be calculated from palette.primary.main,
+      // contrastText: will be calculated to contrast with palette.primary.main
+    },
+    secondary: {
+      light: '#0066ff',
+      main: '#0044ff',
+      // dark: will be calculated from palette.secondary.main,
+      contrastText: '#ffcc00',
+    },
+  },
+  typography: {
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+  },
+});
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -171,7 +204,7 @@ const DecoratedApp = withStyles(styles)(
       const { classes } = this.props;
 
       return (
-        <div>
+        <MuiThemeProvider theme={theme}>
           <CssBaseline />
           <SearchAppBar
             newsSources={this.state.newsSources}
@@ -186,7 +219,7 @@ const DecoratedApp = withStyles(styles)(
             handleUrlSubmit={this.handleUrlSubmit}
             handleUrlChange={this.handleUrlChange}>
           </SearchAppBar>
-        </div>
+        </MuiThemeProvider>
       );
     }
   }
