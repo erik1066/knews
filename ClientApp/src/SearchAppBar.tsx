@@ -38,9 +38,9 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
     },
     avatar: {
-      margin: 5,
-      height: 32,
-      width: 32
+      margin: 4,
+      height: 24,
+      width: 24
     },
 
     articleParagraph: {
@@ -133,10 +133,14 @@ const styles = (theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: theme.spacing.unit * 7,
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing.unit * 9,
+      width: theme.spacing.unit * 8,
+      [theme.breakpoints.up('xs')]: {
+        width: 0,
       },
+      [theme.breakpoints.up('sm')]: {
+        width: theme.spacing.unit * 8,
+      },
+      
     },
     appBarSpacer: theme.mixins.toolbar,
     titleSpacer: {
@@ -173,7 +177,7 @@ function SearchAppBar(props: Props) {
   const sources = props.newsSources.map((source, index) => {
 
     return (
-      <ListItem button onClick={(event) => {
+      <ListItem selected={props.selectedNewsSource && props.selectedNewsSource.name === source.name} button onClick={(event) => {
         props.handleNewsSourceSelection(event, source);
       }}>
         <ListItemAvatar>
