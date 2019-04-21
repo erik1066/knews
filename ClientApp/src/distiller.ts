@@ -41,6 +41,7 @@ export async function distillArticle(url: string): Promise<Article> {
     title: getTitle(doc),
     byline: getByline(doc),
     authors: getAuthors(doc),
+    introImageUrl: '',
     paragraphs: getParagraphs(doc)
   };
 
@@ -124,8 +125,8 @@ function getParagraphs(doc: Document): string[] {
   return paragraphs;
 }
 
-function getAuthors(doc: Document): string[] {
+function getAuthors(doc: Document): string {
   // TODO: Implement
-  let authors: string[] = [];
+  let authors: string = "";
   return authors;
 }

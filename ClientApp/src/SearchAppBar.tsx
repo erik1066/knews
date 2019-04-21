@@ -24,6 +24,7 @@ import { IArticle } from './article';
 import { INewsSource } from './newssource';
 
 import ArticleBody from './ArticleBody';
+import ArticleListBody from './ArticleListBody';
 
 const drawerWidth = 240;
 
@@ -151,9 +152,11 @@ export interface Props extends WithStyles<typeof styles> {
   open: boolean,
   url: string,
   article: IArticle,
+  articles: IArticle[],
   newsSources: INewsSource[],
   handleUrlChange(event: any): void,
-  handleUrlSubmit(event: any): void,
+  handleUrlSubmit(event: any, url: string): void,
+  handleNewsSourceSelection(event: any): void,
   handleDrawerOpen(event: any): void,
   handleDrawerClose(event: any): void,
 }
@@ -166,7 +169,7 @@ function SearchAppBar(props: Props) {
   const sources = props.newsSources.map((source, index) => {
 
     return (
-      <ListItem button>
+      <ListItem button onClick={props.handleNewsSourceSelection}>
         <ListItemAvatar>
           <Avatar
             className={classes.avatar}
@@ -211,7 +214,7 @@ function SearchAppBar(props: Props) {
           <div className={classes.search}>
             <InputBase
               onChange={props.handleUrlChange}
-              onKeyPress={props.handleUrlSubmit}
+              onKeyPress={ (event) => props.handleUrlSubmit(event, props.url) }
               placeholder="Enter a URL…"
               classes={{
                 root: classes.inputRoot,
@@ -236,7 +239,7 @@ function SearchAppBar(props: Props) {
         </div>
         <Divider />
         <List>
-            {sources}
+          {sources}
         </List>
         <Divider />
       </Drawer>
@@ -253,7 +256,12 @@ function SearchAppBar(props: Props) {
 
         <div className={classes.appBarSpacer} />
 
-        <ArticleBody article={props.article}></ArticleBody>
+        {props.article && props.article.title && 
+          <ArticleBody article={props.article}></ArticleBody>
+        }
+        {props.articles &&
+          <ArticleListBody handleUrlSubmit={props.handleUrlSubmit} articles={props.articles}></ArticleListBody>
+        }
 
       </main>
 
