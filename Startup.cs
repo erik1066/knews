@@ -1,3 +1,5 @@
+#pragma warning disable 1591 // disables the warnings about missing Xml code comments
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -98,3 +100,5 @@ namespace Knews
         }
     }
 }
+
+#pragma warning restore 1591

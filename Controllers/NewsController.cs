@@ -44,7 +44,7 @@ namespace Knews.Controllers
         /// <returns>Json</returns>
         [HttpGet("[action]")]
         [Produces("application/json")]
-        public async Task<IActionResult> Sources()
+        public IActionResult Sources()
         {
             // TODO: Pull from database at some point
             List<NewsSource> sources = new List<NewsSource>()

@@ -1,3 +1,5 @@
+#pragma warning disable 1591 // disables the warnings about missing Xml code comments
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,3 +24,5 @@ namespace Knews
                 .UseStartup<Startup>();
     }
 }
+
+#pragma warning restore 1591

@@ -1,3 +1,5 @@
+#pragma warning disable 1591 // disables the warnings about missing Xml code comments
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,3 +23,5 @@ namespace Knews.Pages
         }
     }
 }
+
+#pragma warning restore 1591
