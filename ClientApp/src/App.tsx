@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import * as distiller from './distiller';
 import SearchAppBar from './SearchAppBar';
 import { IArticle } from './article';
+import { INewsSource } from './newssource';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 
 // interfaces
@@ -14,6 +15,7 @@ interface IState {
   loadingMessage: string;
   url: string;
   drawerOpen: boolean;
+  newsSources: INewsSource[];
   article: IArticle;
 }
 
@@ -45,6 +47,7 @@ const DecoratedApp = withStyles(styles)(
         loadingMessage: 'Downloading article...',
         url: '',
         drawerOpen: true,
+        newsSources: [],
         article: {
           organization: '',
           title: '',
@@ -54,7 +57,29 @@ const DecoratedApp = withStyles(styles)(
           paragraphs: []
         }
       };
+
+      this.getNewsSources();
     }
+
+    getNewsSources = async () => {
+
+      const fullUrl: string = 'api/1.0/News/Sources';
+    
+      const response = await fetch(fullUrl, {
+        method: "GET",
+      });
+      const json = await response.json();
+      let sources: INewsSource[] = json as INewsSource[];//JSON.parse(json);
+      
+      this.setState({
+        loading: false,
+        loadingMessage: '',
+        url: this.state.url,
+        drawerOpen: this.state.drawerOpen,
+        newsSources: sources,
+        article: this.state.article
+      });
+    };
 
     handleClick = () => {
       distiller.distillArticle(this.state.url)
@@ -64,6 +89,7 @@ const DecoratedApp = withStyles(styles)(
             loadingMessage: '',
             url: article.url,
             drawerOpen: this.state.drawerOpen,
+            newsSources: this.state.newsSources,
             article: {
               organization: article.organization,
               title: article.title,
@@ -102,6 +128,7 @@ const DecoratedApp = withStyles(styles)(
         <div>
           <CssBaseline />
           <SearchAppBar
+            newsSources={this.state.newsSources}
             article={this.state.article}
             url={this.state.url}
             open={this.state.drawerOpen}

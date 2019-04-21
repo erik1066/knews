@@ -21,6 +21,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { ListItemAvatar } from '@material-ui/core';
 
 import { IArticle } from './article';
+import { INewsSource } from './newssource';
 
 import ArticleBody from './ArticleBody';
 
@@ -150,6 +151,7 @@ export interface Props extends WithStyles<typeof styles> {
   open: boolean,
   url: string,
   article: IArticle,
+  newsSources: INewsSource[],
   handleUrlChange(event: any): void,
   handleUrlSubmit(event: any): void,
   handleDrawerOpen(event: any): void,
@@ -160,6 +162,23 @@ function SearchAppBar(props: Props) {
 
   const { classes } = props;
   let url = props.url;
+
+  const sources = props.newsSources.map((source, index) => {
+
+    return (
+      <ListItem button>
+        <ListItemAvatar>
+          <Avatar
+            className={classes.avatar}
+            alt={source.name}
+            src={source.iconUrl}
+          />
+        </ListItemAvatar>
+        <ListItemText primary={source.name} />
+      </ListItem>
+    );
+  });
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -217,102 +236,9 @@ function SearchAppBar(props: Props) {
         </div>
         <Divider />
         <List>
-          <ListItem button>
-            {/* <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon> */}
-            <ListItemAvatar>
-              <Avatar
-                className={classes.avatar}
-                alt="Ars Technica"
-                src={`https://cdn.arstechnica.net/favicon.ico`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary="Ars Technica" />
-          </ListItem>
-
-          <ListItem button>
-            <ListItemAvatar>
-              <Avatar
-                className={classes.avatar}
-                alt="AnandTech"
-                src={`https://www.anandtech.com/favicon.ico`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary="AnandTech" />
-          </ListItem>
-
-          <ListItem button>
-            <ListItemAvatar>
-              <Avatar
-                className={classes.avatar}
-                alt="The Register"
-                src={`https://www.theregister.co.uk/design_picker/4ee431b84ac2d23c13376f753522acd7ecbb9b47/graphics/favicons/apple-touch-icon.png`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary="The Register" />
-          </ListItem>
-
-          <ListItem button>
-            <ListItemAvatar>
-              <Avatar
-                className={classes.avatar}
-                alt="Hacker News"
-                src={`https://news.ycombinator.com/favicon.ico`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary="Hacker News" />
-          </ListItem>
-
-          <ListItem button>
-            <ListItemAvatar>
-              <Avatar
-                className={classes.avatar}
-                alt="NPR"
-                src={`https://media.npr.org/templates/favicon/favicon-180x180.png`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary="NPR" />
-          </ListItem>
-
-          <ListItem button>
-            <ListItemAvatar>
-              <Avatar
-                className={classes.avatar}
-                alt="New York Times"
-                src={`https://www.nytimes.com/vi-assets/static-assets/apple-touch-icon-319373aaf4524d94d38aa599c56b8655.png`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary="New York Times" />
-          </ListItem>
-
-          <ListItem button>
-            <ListItemAvatar>
-              <Avatar
-                className={classes.avatar}
-                alt="AJC"
-                src={`https://www.ajc.com/r/PortalConfig/np-one/assets-one/myajc/images/favicon-apple-touch-icon.png`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary="AJC" />
-          </ListItem>
-
-          <ListItem button>
-            <ListItemAvatar>
-              <Avatar
-                className={classes.avatar}
-                alt="Vox"
-                src={`https://cdn.vox-cdn.com/uploads/hub/sbnu_logo_minimal/441/touch_icon_iphone_retina_1000_yellow.755.png`}
-              />
-            </ListItemAvatar>
-            <ListItemText primary="Vox" />
-          </ListItem>
-
+            {sources}
         </List>
         <Divider />
-        <List>
-
-        </List>
       </Drawer>
 
       <main className={classes.content}>

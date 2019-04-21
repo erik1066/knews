@@ -7,7 +7,7 @@ import { Article } from './article';
 
 export async function distillArticleList(url: string): Promise<string[]> {
 
-  const fullUrl: string = 'api/1.0/News/Article/' + encodeURIComponent(url);
+  const fullUrl: string = 'api/1.0/News/Articles/' + encodeURIComponent(url);
 
   const response = await fetch(fullUrl, {
     method: "GET",
@@ -22,7 +22,7 @@ export async function distillArticleList(url: string): Promise<string[]> {
 
 export async function distillArticle(url: string): Promise<Article> {
 
-  const fullUrl: string = 'api/1.0/News/Article/' + encodeURIComponent(url);
+  const fullUrl: string = 'api/1.0/News/Articles/' + encodeURIComponent(url);
 
   const response = await fetch(fullUrl, {
     method: "GET",
