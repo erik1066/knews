@@ -38,7 +38,7 @@ const ArticleListBody = (props: ArticleListBodyProps) => {
   const articles = props.articles.map((article, index) => {
 
     return (
-      <Grid item sm={12} md={12} lg={6}>
+      <Grid item sm={12} md={6} lg={3} xl={2}>
         <Card className={classes.card}>
 
           <CardMedia
@@ -48,7 +48,7 @@ const ArticleListBody = (props: ArticleListBodyProps) => {
           />
 
           <CardContent className={classes.cardContent}>
-            <Typography component="h2" variant="h5" onClick={(event) => props.handleUrlSubmit(event, article.url)}>
+            <Typography component="h2" variant="h6" onClick={(event) => props.handleUrlSubmit(event, article.url)}>
               {article.title}
             </Typography>
           </CardContent>
