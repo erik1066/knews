@@ -3,11 +3,13 @@
 // Distills the Html at a given URL to just its readable components
 // TODO: Use xpath from a config file and remove hard-coded strings
 
-import { Article } from './article';
+import { Article, IArticle } from './article';
+import { IArticleConfig } from './article';
 
-export async function distillArticle(url: string): Promise<Article> {
+export async function distillArticle(url: string, source: string): Promise<Article> {
 
   const fullUrl: string = 'api/1.0/News/Articles/' + encodeURIComponent(url);
+  const config = await getArticleConfig(source);
 
   const response = await fetch(fullUrl, {
     method: "GET",
@@ -15,22 +17,83 @@ export async function distillArticle(url: string): Promise<Article> {
   const html = await response.text();
   const doc = new DOMParser().parseFromString(html, 'text/html');
 
-  const title = {
-    type: "title",
-    content: getTitle(doc)
+  let article: Article = parseArticle(doc, url, config);
+
+  return article;
+}
+
+function parseArticle(doc: Document, url: string, config: IArticleConfig): IArticle {
+
+  const title = doc
+    .evaluate(config.title, doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+    .iterateNext()
+    .textContent || '';
+
+
+  let authors = "";
+
+  const authorsNode = doc
+    .evaluate(config.authors, doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+    .iterateNext();
+
+  if (authorsNode) {
+    authors = authorsNode.textContent || '';
+  }
+  else {
+    authors = '';
+  }
+
+  let image: string = "";
+
+  if (config.introImage && config.introImage.length > 0) {
+    const imageNode = doc
+      .evaluate(config.introImage, doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+      .iterateNext();
+
+    if (imageNode) {
+      image = imageNode.textContent || '';
+    }
+    else {
+      image = '';
+    }
+  }
+
+  let subtitle = "";
+  if (config.subtitle && config.subtitle.length > 0) {
+    const subtitleNode = doc
+      .evaluate(config.subtitle, doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+      .iterateNext();
+
+    if (subtitleNode) {
+      subtitle = subtitleNode.textContent || '';
+    }
+    else {
+      subtitle = '';
+    }
   }
 
   let article: Article = {
     organization: getOrganization(doc),
     url: decodeURIComponent(url),
-    title: getTitle(doc),
-    byline: getByline(doc),
-    authors: getAuthors(doc),
-    introImageUrl: getImage(doc),
-    paragraphs: getParagraphs(doc)
+    title: title,
+    introImageUrl: image,
+    byline: subtitle,
+    authors: authors,
+    paragraphs: getParagraphs(doc, config)
   };
 
   return article;
+}
+
+async function getArticleConfig(source: string): Promise<IArticleConfig> {
+  const response: Response = await fetch('api/1.0/Configuration/articles/' + encodeURIComponent(source), {
+    method: "GET",
+  });
+
+  const json = await response.json();
+  let config: IArticleConfig = json as IArticleConfig;
+
+  return config;
 }
 
 function getOrganization(doc: Document): string {
@@ -43,45 +106,11 @@ function getOrganization(doc: Document): string {
   return title;
 }
 
-function getTitle(doc: Document): string {
-
-  const title = doc
-    .evaluate("//article//h1", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
-    .iterateNext()
-    .textContent || '';
-
-  return title;
-}
-
-function getImage(doc: Document): string {
-
-  const imageNode = doc
-    .evaluate("//article//figure//img/@src", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
-    .iterateNext();
-
-  if (imageNode) {
-    return imageNode.textContent || '';
-  }
-  else {
-    return '';
-  }
-}
-
-function getByline(doc: Document): string {
-
-  const byline = doc
-    .evaluate("//article//h2", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
-    .iterateNext()
-    .textContent || '';
-
-  return byline;
-}
-
-function getParagraphs(doc: Document): string[] {
+function getParagraphs(doc: Document, config: IArticleConfig): string[] {
 
   let paragraphs: string[] = [];
 
-  const iterator = doc.evaluate("//article//p", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+  const iterator = doc.evaluate(config.paragraphs, doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
   try {
     let thisNode = iterator.iterateNext();
@@ -99,10 +128,4 @@ function getParagraphs(doc: Document): string[] {
   }
 
   return paragraphs;
-}
-
-function getAuthors(doc: Document): string {
-  // TODO: Implement
-  let authors: string = "";
-  return authors;
 }

@@ -29,7 +29,7 @@ const styles = (theme: Theme) =>
 
 interface ArticleListBodyProps extends WithStyles<typeof styles> {
   articles: IArticle[],
-  handleUrlSubmit(event: any, url: string): void
+  handleUrlSubmit(event: any, article: IArticle): void
 }
 
 const ArticleListBody = (props: ArticleListBodyProps) => {
@@ -49,12 +49,12 @@ const ArticleListBody = (props: ArticleListBodyProps) => {
 
           <CardContent className={classes.cardContent}>
             <Typography component="h2" variant="h6">
-              {article.title}
+              {article.title.substring(0, 96)}
             </Typography>
           </CardContent>
           <CardActions>
             {/* TODO: Make clickable */}
-            <Button size="small" color="primary" onClick={(event) => props.handleUrlSubmit(event, article.url)}>
+            <Button size="small" color="primary" onClick={(event) => props.handleUrlSubmit(event, article)}>
               View
             </Button>
           </CardActions>

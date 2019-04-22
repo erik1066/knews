@@ -23,24 +23,10 @@ export interface INewsSourceListConfig {
   paginationUrlFormat?: string;
 }
 
-export class NewsSourceListConfig implements INewsSourceListConfig {
-  articles = "//main//section//ul//li";
-  title = "./header/h2";
-  subtitle = undefined;
-  url = "./header//h2/a/@href";
-  excerpt = "./header//p[@class='excerpt']";
-  byline = undefined;
-  authors = "//span[@itemprop='name']";
-  image = "./figure//div/@style";
-  publishDate = "//time";
-  commentCount = "//span[@class='comment-count-number']";
-  paginationUrlFormat = "";
-}
-
-export async function getArticleList(url: string, source: string): Promise<IArticle[]> {
-  const config = await getNewsSourceListConfig(source);
+export async function getArticleList(url: string, organization: string): Promise<IArticle[]> {
+  const config = await getNewsSourceListConfig(organization);
   const doc: Document = await getHtmlDocument(url);
-  const articleTeasers: IArticle[] = parseList(doc, config);
+  const articleTeasers: IArticle[] = parseList(doc, config, organization, url);
   return articleTeasers;
 }
 
@@ -50,12 +36,12 @@ async function getNewsSourceListConfig(source: string) : Promise<INewsSourceList
   });
 
   const json = await response.json();
-  let config: INewsSourceListConfig = json as NewsSourceListConfig;
+  let config: INewsSourceListConfig = json as INewsSourceListConfig;
 
   return config;
 }
 
-function parseList(doc: Document, config: INewsSourceListConfig): IArticle[] {
+function parseList(doc: Document, config: INewsSourceListConfig, organization: string, baseUrl: string): IArticle[] {
 
   let articleTeasers: IArticle[] = [];
 
@@ -65,7 +51,11 @@ function parseList(doc: Document, config: INewsSourceListConfig): IArticle[] {
     let articleTeaserNode = iterator.iterateNext();
 
     while (articleTeaserNode) {
-      const articleTeaser: IArticle = parseListItem(doc, config, articleTeaserNode);
+      let articleTeaser: IArticle = parseListItem(doc, config, articleTeaserNode, organization);
+      if (!articleTeaser.url.startsWith('https://')) {
+        articleTeaser.url = baseUrl + articleTeaser.url;
+      }
+      articleTeaser.url
       articleTeasers.push(articleTeaser);
       articleTeaserNode = iterator.iterateNext();
     }
@@ -77,7 +67,7 @@ function parseList(doc: Document, config: INewsSourceListConfig): IArticle[] {
   return articleTeasers;
 }
 
-function parseListItem(doc: Document, config: INewsSourceListConfig, node: Node): IArticle {
+function parseListItem(doc: Document, config: INewsSourceListConfig, node: Node, organization: string): IArticle {
   let article: IArticle = new Article();
 
   article.title = doc
@@ -111,14 +101,9 @@ function parseListItem(doc: Document, config: INewsSourceListConfig, node: Node)
     article.introImageUrl = article.introImageUrl
       .replace('background-image:url(\'', '')
       .replace('\');', '');
+    
+      article.organization = organization;
   }
-
-  // if (config.commentCount && config.commentCount.length > 0) {
-  //   article.commentCount = doc
-  //     .evaluate(config.commentCount, node, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
-  //     .iterateNext()
-  //     .textContent || '';
-  // }
 
   return article;
 }

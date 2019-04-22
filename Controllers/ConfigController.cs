@@ -27,10 +27,10 @@ namespace Knews.Controllers
         public async Task<IActionResult> Articles(string source)
         {
             // TODO: Pull these configs from a database or from a file
-            ArticleConfig config = new ArticleConfig()
+            ArticleConfig arsConfig = new ArticleConfig()
             {
-                NewsSource = "ArsTechnica",
-                Organization = "//title",
+                NewsSource = "Ars Technica",
+                Organization = "Ars Technica",
                 Title = "//article//h1",
                 Subtitle = "//article//h2",
                 FirstPara = "REPLACEME",
@@ -45,7 +45,33 @@ namespace Knews.Controllers
                 PaginationUrlFormat = "{x}",
             };
 
-            return Ok(config);
+            ArticleConfig anandConfig = new ArticleConfig()
+            {
+                NewsSource = "AnandTech",
+                Organization = "AnandTech",
+                Title = "//h1",
+                Subtitle = "",
+                FirstPara = "",
+                Paragraphs = "//div[@class='articleContent']//p",
+                Footer = "",
+                IntroImage = "//div[@class='sidepadding review']//div[@style='']//img/@src",
+                Authors = "//a[@class='b']",
+                PublishDate = "//div[@class='blog_top_left']//em",
+                UpperDeck = "",
+                CommentCount = "//div[@class='blog_top_right show_resp2']/span/a",
+                CommentsUrlFormat = "{x}",
+                PaginationUrlFormat = "{x}",
+            };
+
+            if (source == "Ars Technica")
+            {
+                return Ok(arsConfig);                
+            }
+            else if (source == "AnandTech")
+            {
+                return Ok(anandConfig);
+            }
+            return Ok(arsConfig);
         }
 
         // GET api/1.0/configuration/articlelists/{source}

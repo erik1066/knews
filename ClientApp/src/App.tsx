@@ -120,9 +120,9 @@ const DecoratedApp = withStyles(styles)(
       });
     };
 
-    handleUrlSubmit = (event: any, url: string) => {
+    handleUrlSubmit = (event: any, article: IArticle) => {
       // TODO: Consolidate this and the handleClick() method below
-      distiller.distillArticle(url)
+      distiller.distillArticle(article.url, article.organization)
         .then(article => {
           this.setState({
             loading: false,
@@ -145,8 +145,8 @@ const DecoratedApp = withStyles(styles)(
         });
     }
 
-    handleClick = () => {
-      distiller.distillArticle(this.state.url)
+    handleClick = (event: any, source: INewsSource) => {
+      distiller.distillArticle(this.state.url, source.name)
         .then(article => {
           this.setState({
             loading: false,
