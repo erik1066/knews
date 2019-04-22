@@ -49,14 +49,15 @@ const ArticleBody = (props: ArticleBodyProps) => {
     <Grid container spacing={40}>
       <Grid item sm={12} md={12} lg={12}>
 
-        <Card className={classes.card}>
-
-          <CardMedia
-            className={classes.cardMedia}
-            image={props.article.introImageUrl} // eslint-disable-line max-len
-            title={props.article.title}
-          />
-        </Card>
+        {props.article.introImageUrl && props.article.introImageUrl.length > 0 &&
+          <Card className={classes.card}>
+            <CardMedia
+              className={classes.cardMedia}
+              image={props.article.introImageUrl} // eslint-disable-line max-len
+              title={props.article.title}
+            />
+          </Card>
+        }
 
         {paragraphs}
       </Grid>

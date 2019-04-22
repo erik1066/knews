@@ -55,12 +55,16 @@ function getTitle(doc: Document): string {
 
 function getImage(doc: Document): string {
 
-  const image = doc
+  const imageNode = doc
     .evaluate("//article//figure//img/@src", doc, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
-    .iterateNext()
-    .textContent || '';
+    .iterateNext();
 
-  return image;
+  if (imageNode) {
+    return imageNode.textContent || '';
+  }
+  else {
+    return '';
+  }
 }
 
 function getByline(doc: Document): string {
