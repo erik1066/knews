@@ -12,6 +12,7 @@ export interface INewsSource {
 export interface INewsSourceListConfig {
   articles: string;
   title: string;
+  subtitle?: string;
   url: string;
   excerpt?: string;
   byline?: string;
@@ -25,6 +26,7 @@ export interface INewsSourceListConfig {
 export class NewsSourceListConfig implements INewsSourceListConfig {
   articles = "//main//section//ul//li";
   title = "./header/h2";
+  subtitle = undefined;
   url = "./header//h2/a/@href";
   excerpt = "./header//p[@class='excerpt']";
   byline = undefined;
@@ -35,11 +37,22 @@ export class NewsSourceListConfig implements INewsSourceListConfig {
   paginationUrlFormat = "";
 }
 
-export async function getArticleList(url: string): Promise<IArticle[]> {
-  const config = new NewsSourceListConfig();
+export async function getArticleList(url: string, source: string): Promise<IArticle[]> {
+  const config = await getNewsSourceListConfig(source);
   const doc: Document = await getHtmlDocument(url);
   const articleTeasers: IArticle[] = parseList(doc, config);
   return articleTeasers;
+}
+
+async function getNewsSourceListConfig(source: string) : Promise<INewsSourceListConfig> {
+  const response: Response = await fetch('api/1.0/Configuration/articlelists/' + encodeURIComponent(source), {
+    method: "GET",
+  });
+
+  const json = await response.json();
+  let config: INewsSourceListConfig = json as NewsSourceListConfig;
+
+  return config;
 }
 
 function parseList(doc: Document, config: INewsSourceListConfig): IArticle[] {

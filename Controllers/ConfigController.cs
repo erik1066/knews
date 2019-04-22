@@ -47,5 +47,54 @@ namespace Knews.Controllers
 
             return Ok(config);
         }
+
+        // GET api/1.0/configuration/articlelists/{source}
+        /// <summary>
+        /// Gets the article list parsing configuration for a given news source
+        /// </summary>
+        /// <returns>Json</returns>
+        [HttpGet("[action]/{source}")]
+        [Produces("application/json")]
+        public async Task<IActionResult> ArticleLists(string source)
+        {
+            // TODO: Pull these configs from a database or from a file
+            ArticleListConfig arsConfig = new ArticleListConfig()
+            {
+                Organization = "Ars Technica",
+                Articles = "//main//section//ul//li",
+                Title = "./header/h2",
+                Url = "./header//h2/a/@href",
+                Excerpt = "./header//p[@class='excerpt']",
+                Authors = "//span[@itemprop='name']",
+                Image = "./figure//div/@style",
+                PublishDate = "//time",
+                CommentCount = "//span[@class='comment-count-number']",
+                PaginationUrlFormat = "",
+            };
+
+            ArticleListConfig anandConfig = new ArticleListConfig()
+            {
+                Organization = "AnandTech",
+                Articles = "//section[@class='main_cont']//div[@class='cont_box1 l_']",
+                Title = "./div[@class='cont_box1_txt']/h2",
+                Url = "./div[@class='cont_box1_txt']/a/@href",
+                Excerpt = "./div[@class='cont_box1_txt']/p",
+                Authors = "./div[@class='cont_box1_txt']/span/a[@class='b']",
+                Image = "./div[@class='cont_box1_pic pie']//a/img/@src",
+                PublishDate = "./div[@class='cont_box1_txt']/span",
+                CommentCount = "//strong",
+                PaginationUrlFormat = "",
+            };
+
+            if (source == "Ars Technica")
+            {
+                return Ok(arsConfig);                
+            }
+            else if (source == "AnandTech")
+            {
+                return Ok(anandConfig);
+            }
+            return Ok(arsConfig);
+        }
     }
 }

@@ -82,7 +82,7 @@ const DecoratedApp = withStyles(styles)(
         loading: true,
         loadingMessage: 'Downloading article...',
         url: '',
-        drawerOpen: true,
+        drawerOpen: false,
         newsSources: [],
         articleList: [],
         article: {
@@ -172,7 +172,7 @@ const DecoratedApp = withStyles(styles)(
     handleNewsSourceSelection = (event: any, source: INewsSource) => {
       let newState = JSON.parse(JSON.stringify(this.state));
 
-      newsSources.getArticleList(source.url)
+      newsSources.getArticleList(source.url, source.name)
         .then(list => {
           newState.articleList = list;
           newState.article = {};
