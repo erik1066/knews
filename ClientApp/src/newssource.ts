@@ -30,7 +30,7 @@ export async function getArticleList(url: string, organization: string): Promise
   return articleTeasers;
 }
 
-async function getNewsSourceListConfig(source: string) : Promise<INewsSourceListConfig> {
+async function getNewsSourceListConfig(source: string): Promise<INewsSourceListConfig> {
   const response: Response = await fetch('api/1.0/Configuration/articlelists/' + encodeURIComponent(source), {
     method: "GET",
   });
@@ -55,8 +55,11 @@ function parseList(doc: Document, config: INewsSourceListConfig, organization: s
       if (!articleTeaser.url.startsWith('https://')) {
         articleTeaser.url = baseUrl + articleTeaser.url;
       }
-      articleTeaser.url
-      articleTeasers.push(articleTeaser);
+
+      const found = articleTeasers.find(t => t.title === articleTeaser.title);
+      if (!found) {
+        articleTeasers.push(articleTeaser);
+      }
       articleTeaserNode = iterator.iterateNext();
     }
   }
@@ -75,10 +78,15 @@ function parseListItem(doc: Document, config: INewsSourceListConfig, node: Node,
     .iterateNext()
     .textContent || '';
 
-  article.authors = doc
-    .evaluate(config.authors, node, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
-    .iterateNext()
-    .textContent || '';
+  if (config.authors && config.authors.length > 0) {
+    article.authors = doc
+      .evaluate(config.authors, node, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+      .iterateNext()
+      .textContent || '';
+  }
+  else {
+    article.authors = "";
+  }
 
   if (config.byline && config.byline.length > 0) {
     article.byline = doc
@@ -93,17 +101,26 @@ function parseListItem(doc: Document, config: INewsSourceListConfig, node: Node,
     .textContent || '';
 
   if (config.image && config.image.length > 0) {
-    article.introImageUrl = doc
+    const introImageUrlNode = doc
       .evaluate(config.image, node, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
-      .iterateNext()
-      .textContent || '';
+      .iterateNext();
 
-    article.introImageUrl = article.introImageUrl
-      .replace('background-image:url(\'', '')
-      .replace('\');', '');
-    
-      article.organization = organization;
+    if (introImageUrlNode) {
+      article.introImageUrl = introImageUrlNode.textContent || '';
+
+      article.introImageUrl = article.introImageUrl
+        .replace('background-image:url(\'', '')
+        .replace('\');', '');
+
+      const index: number = article.introImageUrl.indexOf('?');
+      if (index > 0) {
+        article.introImageUrl = article.introImageUrl.substring(0, index);
+      }
+    }
   }
+
+  article.organization = organization;
+
 
   return article;
 }
