@@ -49,7 +49,7 @@ const ArticleListBody = (props: ArticleListBodyProps) => {
 
           <CardContent className={classes.cardContent}>
             <Typography component="h2" variant="h6">
-              {article.title.substring(0, 96)}
+              {article.title.substring(0, 128)}
             </Typography>
           </CardContent>
           <CardActions>

@@ -63,6 +63,42 @@ namespace Knews.Controllers
                 PaginationUrlFormat = "{x}",
             };
 
+            ArticleConfig registerConfig = new ArticleConfig()
+            {
+                NewsSource = "The Register",
+                Organization = "The Register",
+                Title = "//h1",
+                Subtitle = "//h2",
+                FirstPara = "",
+                Paragraphs = "//div[@id='body']//p",
+                Footer = "",
+                IntroImage = "//div[@class='sidepadding review']//div[@style='']//img/@src",
+                Authors = "//a[@class='alt_colour dcl']",
+                PublishDate = "//span[@class='dateline']",
+                UpperDeck = "",
+                CommentCount = "//div[@class='comments_share']/a/span",
+                CommentsUrlFormat = "{x}",
+                PaginationUrlFormat = "{x}",
+            };
+
+            ArticleConfig ajcConfig = new ArticleConfig()
+            {
+                NewsSource = "AJC",
+                Organization = "AJC",
+                Title = "//h1",
+                Subtitle = "",
+                FirstPara = "",
+                Paragraphs = "//p",
+                Footer = "",
+                IntroImage = "//img/@src",
+                Authors = "//div[@class='names']/ul/li/names",
+                PublishDate = "//time/@data-timestamp",
+                UpperDeck = "",
+                CommentCount = "",
+                CommentsUrlFormat = "{x}",
+                PaginationUrlFormat = "{x}",
+            };
+
             if (source == "Ars Technica")
             {
                 return Ok(arsConfig);                
@@ -70,6 +106,14 @@ namespace Knews.Controllers
             else if (source == "AnandTech")
             {
                 return Ok(anandConfig);
+            }
+            else if (source == "The Register")
+            {
+                return Ok(registerConfig);
+            }
+            else if (source == "AJC")
+            {
+                return Ok(ajcConfig);
             }
             return Ok(arsConfig);
         }
@@ -112,6 +156,76 @@ namespace Knews.Controllers
                 PaginationUrlFormat = "",
             };
 
+            ArticleListConfig registerConfig = new ArticleListConfig()
+            {
+                Organization = "The Register",
+                Articles = "//article",
+                Title = "./a/div[@class='article_text_elements']/h4",
+                Url = "./a/@href",
+                Excerpt = "./a/div[@class='article_text_elements']/div[@class='standfirst']",
+                Authors = "",
+                Image = "./a/div[@class='story_grid_img']/img/@data-src",
+                PublishDate = "", //"./a//span[@class='time_stamp']",
+                CommentCount = "", // "./a//span[@class='comment light_bg_comments']",
+                PaginationUrlFormat = "",
+            };
+
+            ArticleListConfig nprConfig = new ArticleListConfig()
+            {
+                Organization = "National Public Radio",
+                Articles = "//article",
+                Title = ".//h3", //"./div[@class='story-wrap']/div[@class='story-text']/a[0]",
+                Url = ".//a/@href",
+                Excerpt = "",
+                Authors = "",
+                Image = ".//img/@src",
+                PublishDate = "", //"./a//span[@class='time_stamp']",
+                CommentCount = "", // "./a//span[@class='comment light_bg_comments']",
+                PaginationUrlFormat = "",
+            };
+
+            ArticleListConfig nytConfig = new ArticleListConfig()
+            {
+                Organization = "New York Times",
+                Articles = "//article",
+                Title = ".//h2", //"./div[@class='story-wrap']/div[@class='story-text']/a[0]",
+                Url = ".//a/@href",
+                Excerpt = "",
+                Authors = ".//span[@itemprop='name']",
+                Image = ".//img/@src",
+                PublishDate = "", //"./a//span[@class='time_stamp']",
+                CommentCount = "", // "./a//span[@class='comment light_bg_comments']",
+                PaginationUrlFormat = "",
+            };
+
+            ArticleListConfig ajcConfig = new ArticleListConfig()
+            {
+                Organization = "AJC",
+                Articles = "//ul[@class='tease-list  tease-list--strip tease-list--row tease-list--slider']//li[@class='tease ']",
+                Title = ".//h3", //"./div[@class='story-wrap']/div[@class='story-text']/a[0]",
+                Url = ".//a/@href",
+                Excerpt = "",
+                Authors = "",
+                Image = ".//img/@data-src",
+                PublishDate = "", //"./a//span[@class='time_stamp']",
+                CommentCount = "", // "./a//span[@class='comment light_bg_comments']",
+                PaginationUrlFormat = "",
+            };
+
+            ArticleListConfig voxConfig = new ArticleListConfig()
+            {
+                Organization = "Vox",
+                Articles = "//div[@class='c-compact-river__entry ']",
+                Title = ".//h2",
+                Url = ".//a/@href",
+                Excerpt = "",
+                Authors = "",
+                Image = ".//img/@src",
+                PublishDate = "",
+                CommentCount = "",
+                PaginationUrlFormat = "",
+            };
+
             if (source == "Ars Technica")
             {
                 return Ok(arsConfig);                
@@ -119,6 +233,26 @@ namespace Knews.Controllers
             else if (source == "AnandTech")
             {
                 return Ok(anandConfig);
+            }
+            else if (source == "The Register")
+            {
+                return Ok(registerConfig);
+            }
+            else if (source == "National Public Radio")
+            {
+                return Ok(nprConfig);
+            }
+            else if (source == "New York Times")
+            {
+                return Ok(nytConfig);
+            }
+            else if (source == "AJC")
+            {
+                return Ok(ajcConfig);
+            }
+            else if (source == "Vox")
+            {
+                return Ok(voxConfig);
             }
             return Ok(arsConfig);
         }

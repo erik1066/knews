@@ -23,6 +23,9 @@ const styles = (theme: Theme) =>
     cardMedia: {
       paddingTop: '56.25%', // 16:9
     },
+    spacer: {
+      height: '1rem'
+    }
   });
 
 interface ArticleBodyProps extends WithStyles<typeof styles> {
@@ -58,6 +61,8 @@ const ArticleBody = (props: ArticleBodyProps) => {
             />
           </Card>
         }
+
+        <div className={classes.spacer} />
 
         {paragraphs}
       </Grid>
