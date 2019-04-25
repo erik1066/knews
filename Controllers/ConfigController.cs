@@ -131,7 +131,7 @@ namespace Knews.Controllers
             ArticleListConfig arsConfig = new ArticleListConfig()
             {
                 Organization = "Ars Technica",
-                Articles = "//main//section//ul//li",
+                Articles = "//main//section//li",
                 Title = "./header/h2",
                 Url = "./header//h2/a/@href",
                 Excerpt = "./header//p[@class='excerpt']",
