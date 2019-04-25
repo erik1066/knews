@@ -104,6 +104,7 @@ function parseListItem(doc: Document, config: INewsSourceListConfig, node: Node,
 
   if (titleNode) {
     article.title = titleNode.textContent || '';
+    article.title = article.title.replace(/^\s+|\s+$/g,'');
   }
 
   if (config.authors && config.authors.length > 0) {
