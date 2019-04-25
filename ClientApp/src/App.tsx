@@ -171,14 +171,15 @@ const DecoratedApp = withStyles(styles)(
 
     handleNewsSourceSelection = (event: any, source: INewsSource) => {
       let newState = JSON.parse(JSON.stringify(this.state));
-
-      newsSources.getArticleList(source.url, source.name)
-        .then(list => {
-          newState.articleList = list;
-          newState.article = {};
-          newState.selectedNewsSource = source;
-          this.setState(newState);
-        });
+      
+        newsSources.getArticleList(source.url, source.name, source.urlSections)
+          .then(list => {
+            newState.articleList = list;
+            newState.article = {};
+            newState.selectedNewsSource = source;
+            this.setState(newState);
+          });
+      
     }
 
     handleUrlChange = (event: any) => {

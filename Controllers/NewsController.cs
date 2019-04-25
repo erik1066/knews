@@ -75,14 +75,20 @@ namespace Knews.Controllers
                 },
                 new NewsSource()
                 {
-                    Name = "NPR",
-                    Url = "https://www.npr.org",
+                    Name = "National Public Radio",
+                    Url = "https://www.npr.org/",
                     IconUrl = "https://media.npr.org/templates/favicon/favicon-180x180.png"
                 },
                 new NewsSource()
                 {
                     Name = "New York Times",
                     Url = "https://www.nytimes.com",
+                    UrlSections = new List<string>() {
+                        "/section/us",
+                        "/section/world",
+                        "/section/technology",
+                        "/section/science"
+                    },
                     IconUrl = "https://www.nytimes.com/vi-assets/static-assets/apple-touch-icon-319373aaf4524d94d38aa599c56b8655.png"
                 },
                 new NewsSource()
