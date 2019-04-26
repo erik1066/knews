@@ -31,6 +31,10 @@ namespace Knews.Controllers
 
             using (HttpResponseMessage result = await _client.GetAsync(decodedUrl))
             {
+                if (result.StatusCode == HttpStatusCode.NotFound) 
+                {
+                    return NotFound();
+                }
                 html = await result.Content.ReadAsStringAsync();
             }
 

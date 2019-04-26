@@ -19,7 +19,45 @@ export async function distillArticle(url: string, source: string): Promise<Artic
 
   let article: Article = parseArticle(doc, url, config);
 
+  const articlePages = await checkForMorePages(article, url, source);
+
+  for (let i = 0; i < articlePages.length; i++) {
+    article.paragraphs = article.paragraphs.concat(articlePages[i].paragraphs);
+  }
+
   return article;
+}
+
+async function checkForMorePages(baseArticle: IArticle, url: string, source: string): Promise<IArticle[]> {
+
+  let articlePages: IArticle[] = [];
+
+  for (let i = 2; i < 20; i++) {
+    const fullUrl: string = 'api/1.0/News/Articles/' + encodeURIComponent(url + '/' + i);
+    const config = await getArticleConfig(source);
+
+    const response = await fetch(fullUrl, {
+      method: "GET",
+    });
+
+    if (response.status >= 200 && response.status <= 299)
+    {
+      const html = await response.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');  
+      let article: Article = parseArticle(doc, url, config);
+
+      if (article.paragraphs.length == 0 || baseArticle.paragraphs.length == 0 || article.paragraphs[0] === baseArticle.paragraphs[0]) {
+        break;
+      }
+      articlePages.push(article);
+    }
+    else
+    {
+      break;
+    }
+  }
+
+  return articlePages;
 }
 
 function parseArticle(doc: Document, url: string, config: IArticleConfig): IArticle {
