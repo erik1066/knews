@@ -147,7 +147,7 @@ namespace Knews.Controllers
                 Organization = "AnandTech",
                 Articles = "//section[@class='main_cont']//div[@class='cont_box1 l_']",
                 Title = "./div[@class='cont_box1_txt']/h2",
-                Url = "./div[@class='cont_box1_txt']/a/@href",
+                Url = "./div[@class='cont_box1_txt']/h2/a/@href",
                 Excerpt = "./div[@class='cont_box1_txt']/p",
                 Authors = "./div[@class='cont_box1_txt']/span/a[@class='b']",
                 Image = "./div[@class='cont_box1_pic pie']//a/img/@src",
