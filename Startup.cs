@@ -25,6 +25,7 @@ namespace Knews
         {
             AddSwaggerServices(services);
 
+            services.AddResponseCaching();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the React files will be served from this directory

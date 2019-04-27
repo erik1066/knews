@@ -24,6 +24,7 @@ namespace Knews.Controllers
         /// <returns>Html</returns>
         [HttpGet("[action]/{url}")]
         [Produces("text/html")]
+        [ResponseCache(Duration=60)]
         public async Task<IActionResult> Articles(string url)
         {
             string decodedUrl = System.Net.WebUtility.UrlDecode(url);
