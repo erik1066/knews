@@ -31,7 +31,7 @@ namespace Knews.Controllers
             {
                 NewsSource = "Ars Technica",
                 Organization = "Ars Technica",
-                Title = "//article//h1",
+                Title = "//h1",
                 Subtitle = "//article//h2",
                 FirstPara = "REPLACEME",
                 Paragraphs = "//main//article//p",
@@ -99,6 +99,24 @@ namespace Knews.Controllers
                 PaginationUrlFormat = "{x}",
             };
 
+            ArticleConfig voxConfig = new ArticleConfig()
+            {
+                NewsSource = "Vox",
+                Organization = "Vox",
+                Title = "//h1",
+                Subtitle = "//h2[@class='c-entry-summary p-dek']",
+                FirstPara = "REPLACEME",
+                Paragraphs = "//p",
+                Footer = "",
+                IntroImage = "",
+                Authors = "//span[@class='c-byline__item']",
+                PublishDate = "//time",
+                UpperDeck = "",
+                CommentCount = "",
+                CommentsUrlFormat = "{x}",
+                PaginationUrlFormat = "{x}",
+            };
+
             if (source == "Ars Technica")
             {
                 return Ok(arsConfig);                
@@ -114,6 +132,10 @@ namespace Knews.Controllers
             else if (source == "AJC")
             {
                 return Ok(ajcConfig);
+            }
+            else if (source == "Vox")
+            {
+                return Ok(voxConfig);
             }
             return Ok(arsConfig);
         }
