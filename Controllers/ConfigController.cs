@@ -262,6 +262,20 @@ namespace Knews.Controllers
                 PaginationUrlFormat = "",
             };
 
+            ArticleListConfig saConfig = new ArticleListConfig()
+            {
+                Organization = "Scientific American",
+                Articles = "//article[@class='listing listing--with-thumb']",
+                Title = ".//h2",
+                Url = ".//h2/a/@href",
+                Excerpt = ".//p[@class='listing-feature__summary']",
+                Authors = "",
+                Image = ".//img/@src",
+                PublishDate = ".//p[@class='t_meta listing__meta']",
+                CommentCount = "",
+                PaginationUrlFormat = "",
+            };
+
             if (source == "Ars Technica")
             {
                 return Ok(arsConfig);                
@@ -293,6 +307,10 @@ namespace Knews.Controllers
             else if (source == "The Atlantic")
             {
                 return Ok(atlanticConfig);
+            }
+            else if (source == "Scientific American")
+            {
+                return Ok(saConfig);
             }
             return Ok(arsConfig);
         }
