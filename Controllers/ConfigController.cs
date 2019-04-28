@@ -17,7 +17,7 @@ namespace Knews.Controllers
     {
         private static HttpClient _client = new HttpClient();
 
-        // GET api/1.0/config/articles/{source}
+        // GET api/1.0/configuration/articles/{source}
         /// <summary>
         /// Gets the article parsing configuration for a given news source
         /// </summary>
