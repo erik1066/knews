@@ -120,6 +120,12 @@ namespace Knews.Controllers
                     Url = "https://www.scientificamerican.com/",
                     IconUrl = "https://www.scientificamerican.com/public/resources/favicons/favicon-196-f10395ba7ecf07756e4b5a82c4795b61.png"
                 },
+                new NewsSource()
+                {
+                    Name = "TechCrunch",
+                    Url = "https://techcrunch.com/",
+                    IconUrl = "https://techcrunch.com/wp-content/uploads/2015/02/cropped-cropped-favicon-gradient.png"
+                },
             };
 
             return Ok(sources);

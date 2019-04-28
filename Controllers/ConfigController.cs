@@ -117,6 +117,24 @@ namespace Knews.Controllers
                 PaginationUrlFormat = "{x}",
             };
 
+            ArticleConfig tcConfig = new ArticleConfig()
+            {
+                NewsSource = "TechCrunch",
+                Organization = "TechCrunch",
+                Title = "//h1",
+                Subtitle = "",
+                FirstPara = "",
+                Paragraphs = "//article//p",
+                Footer = "",
+                IntroImage = "//article//img/@src",
+                Authors = "//span[@itemprop='name']",
+                PublishDate = "//time",
+                UpperDeck = "//h4[@class='post-upperdek']",
+                CommentCount = "//span[@class='comment-count-number']",
+                CommentsUrlFormat = "{x}",
+                PaginationUrlFormat = "{x}",
+            };
+
             if (source == "Ars Technica")
             {
                 return Ok(arsConfig);                
@@ -136,6 +154,10 @@ namespace Knews.Controllers
             else if (source == "Vox")
             {
                 return Ok(voxConfig);
+            }
+            else if (source == "TechCrunch")
+            {
+                return Ok(tcConfig);
             }
             return Ok(arsConfig);
         }
@@ -276,6 +298,20 @@ namespace Knews.Controllers
                 PaginationUrlFormat = "",
             };
 
+            ArticleListConfig tcConfig = new ArticleListConfig()
+            {
+                Organization = "TechCrunch",
+                Articles = "//div[@class='post-block post-block--image post-block--unread']",
+                Title = ".//h2",
+                Url = ".//h2/a/@href",
+                Excerpt = ".//div[@class='post-block__content']",
+                Authors = ".//span[@class='river-byline__authors']",
+                Image = ".//img/@src",
+                PublishDate = ".//time",
+                CommentCount = "",
+                PaginationUrlFormat = "",
+            };
+
             if (source == "Ars Technica")
             {
                 return Ok(arsConfig);                
@@ -311,6 +347,10 @@ namespace Knews.Controllers
             else if (source == "Scientific American")
             {
                 return Ok(saConfig);
+            }
+            else if (source == "TechCrunch")
+            {
+                return Ok(tcConfig);
             }
             return Ok(arsConfig);
         }
