@@ -108,6 +108,12 @@ namespace Knews.Controllers
                     Url = "https://www.vox.com",
                     IconUrl = "https://cdn.vox-cdn.com/uploads/hub/sbnu_logo_minimal/441/touch_icon_iphone_retina_1000_yellow.755.png"
                 },
+                new NewsSource()
+                {
+                    Name = "The Atlantic",
+                    Url = "https://www.theatlantic.com/",
+                    IconUrl = "https://cdn.theatlantic.com/assets/static/b/theatlantic/img/default-thumbnail.png"
+                },
             };
 
             return Ok(sources);

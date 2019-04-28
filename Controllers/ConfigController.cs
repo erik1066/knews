@@ -248,6 +248,20 @@ namespace Knews.Controllers
                 PaginationUrlFormat = "",
             };
 
+            ArticleListConfig atlanticConfig = new ArticleListConfig()
+            {
+                Organization = "The Atlantic",
+                Articles = "//article[@class='c-tease c-tease--article c-tease--']",
+                Title = ".//h3",
+                Url = ".//a/@href",
+                Excerpt = "",
+                Authors = "",
+                Image = ".//source/@data-srcset",
+                PublishDate = ".//time",
+                CommentCount = "",
+                PaginationUrlFormat = "",
+            };
+
             if (source == "Ars Technica")
             {
                 return Ok(arsConfig);                
@@ -275,6 +289,10 @@ namespace Knews.Controllers
             else if (source == "Vox")
             {
                 return Ok(voxConfig);
+            }
+            else if (source == "The Atlantic")
+            {
+                return Ok(atlanticConfig);
             }
             return Ok(arsConfig);
         }
