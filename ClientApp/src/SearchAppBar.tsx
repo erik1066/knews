@@ -140,7 +140,7 @@ const styles = (theme: Theme) =>
       [theme.breakpoints.up('sm')]: {
         width: theme.spacing.unit * 8,
       },
-      
+
     },
     appBarSpacer: theme.mixins.toolbar,
     titleSpacer: {
@@ -152,7 +152,10 @@ const styles = (theme: Theme) =>
       height: '100vh',
       overflow: 'auto',
     },
-
+    articleContent: {
+      maxWidth: "40rem",
+      margin: "auto",
+    },
   });
 
 export interface Props extends WithStyles<typeof styles> {
@@ -257,28 +260,31 @@ function SearchAppBar(props: Props) {
       {props.article && props.article.title &&
 
         <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
 
-          {props.selectedNewsSource &&
-            <Typography variant="h5" gutterBottom component="p">
-              {props.selectedNewsSource.name}
-            </Typography>
-          }
-          <Divider />
-          <div className={classes.titleSpacer} />
+          <div className={classes.articleContent}>
+            <div className={classes.appBarSpacer} />
 
-          <div>
-            <Typography variant="h4" gutterBottom component="h1">
-              {props.article.title}
-            </Typography>
-
-            <Typography variant="h6" gutterBottom component="h2">
-              {props.article.byline}
-            </Typography>
-
+            {props.selectedNewsSource &&
+              <Typography variant="h5" gutterBottom component="p">
+                {props.selectedNewsSource.name}
+              </Typography>
+            }
+            <Divider />
             <div className={classes.titleSpacer} />
 
-            <ArticleBody article={props.article}></ArticleBody>
+            <div>
+              <Typography variant="h4" gutterBottom component="h1">
+                {props.article.title}
+              </Typography>
+
+              <Typography variant="h6" gutterBottom component="h2">
+                {props.article.byline}
+              </Typography>
+
+              <div className={classes.titleSpacer} />
+
+              <ArticleBody article={props.article}></ArticleBody>
+            </div>
           </div>
         </main>
       }

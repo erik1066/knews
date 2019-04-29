@@ -13,7 +13,7 @@ const styles = (theme: Theme) =>
   createStyles({
     articleParagraph: {
       fontSize: 20,
-      marginBottom: 25
+      marginBottom: 25,
     },
     card: {
       height: 'auto',
@@ -25,6 +25,10 @@ const styles = (theme: Theme) =>
     },
     spacer: {
       height: '1rem'
+    },
+    articleGrid: {
+      maxWidth: "40rem",
+      margin: "auto",
     }
   });
 
@@ -49,7 +53,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
   });
 
   return (
-    <Grid container spacing={40}>
+    <Grid container className={classes.articleGrid}>
       <Grid item sm={12} md={12} lg={12}>
 
         {props.article.introImageUrl && props.article.introImageUrl.length > 0 &&
