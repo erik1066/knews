@@ -217,7 +217,7 @@ function SearchAppBar(props: Props) {
             variant="h6"
             color="inherit"
             noWrap>
-            Knews
+            Knews (alpha)
           </Typography>
 
           <div className={classes.grow} />
