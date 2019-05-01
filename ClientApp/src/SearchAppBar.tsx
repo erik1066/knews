@@ -12,6 +12,7 @@ import InputBase from '@material-ui/core/InputBase';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
+import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
@@ -164,7 +165,7 @@ export interface Props extends WithStyles<typeof styles> {
   article: IArticle,
   articles: IArticle[],
   newsSources: INewsSource[],
-  selectedNewsSource?: INewsSource,
+  selectedNewsSource: INewsSource,
   handleUrlChange(event: any): void,
   handleUrlSubmit(event: any, url: string): void,
   handleNewsSourceSelection(event: any, source: INewsSource): void,
@@ -266,7 +267,11 @@ function SearchAppBar(props: Props) {
 
             {props.selectedNewsSource &&
               <Typography variant="h5" gutterBottom component="p">
-                {props.selectedNewsSource.name}
+
+                <Link href={"#"} onClick={(event: any) => props.handleNewsSourceSelection(event, props.selectedNewsSource)}>
+                  {props.selectedNewsSource.name}
+                </Link>
+
               </Typography>
             }
             <Divider />
