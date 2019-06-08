@@ -5,14 +5,14 @@
   "dependencies": {
     "@types/classnames": "^2.2.7",
     "@types/jest": "24.0.11",
-    "@types/node": "11.13.4",
-    "@types/react": "16.8.13",
+    "@types/node": "11.13.6",
+    "@types/react": "16.8.14",
     "@types/react-dom": "16.8.4",
-    "fdns-ui-react": "^0.7.3",
+    "fdns-ui-react": "^0.7.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8",
-    "typescript": "3.4.3"
+    "react-scripts": "3.0.0",
+    "typescript": "3.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
